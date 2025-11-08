@@ -75,10 +75,11 @@ public class DashboardFrame extends JFrame {
         left.setBackground(UIConstants.COLOR_BACKGROUND);
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
 
-        JPanel profileCard = new JPanel();
+        // Profile Card
+        JPanel profileCard = new JPanel(new BorderLayout(0, 10)); 
         profileCard.setBackground(UIConstants.COLOR_PRIMARY);
-        profileCard.setLayout(new BoxLayout(profileCard, BoxLayout.Y_AXIS));
         profileCard.setBorder(new EmptyBorder(20, 20, 20, 20));
+        profileCard.setMaximumSize(new Dimension(Integer.MAX_VALUE, profileCard.getPreferredSize().height)); // Agar lebar maksimal
 
         JLabel halo = new JLabel("Halo, Asma Elhasna Hamid");
         halo.setForeground(Color.WHITE);
@@ -92,24 +93,35 @@ public class DashboardFrame extends JFrame {
         prodi.setForeground(Color.WHITE);
         prodi.setFont(UIConstants.FONT_SMALL);
 
-        JPanel avatarCircle = new JPanel();
-        avatarCircle.setBackground(new Color(255, 255, 255, 40));
+        // Avatar
+        JPanel avatarCircle = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(255, 255, 255, 60));
+                g2.fillOval(0, 0, getWidth(), getHeight());
+                g2.dispose();
+            }
+        };
+        avatarCircle.setOpaque(false);
         avatarCircle.setPreferredSize(new Dimension(50, 50));
         avatarCircle.setMaximumSize(new Dimension(50, 50));
-        avatarCircle.setLayout(new BorderLayout());
+        avatarCircle.setLayout(new GridBagLayout()); 
         JLabel avatarIcon = new JLabel("👤", SwingConstants.CENTER);
-        avatarCircle.add(avatarIcon, BorderLayout.CENTER);
+        avatarIcon.setFont(new Font("SansSerif", Font.PLAIN, 28)); 
+        avatarCircle.add(avatarIcon); 
 
-        JPanel topRow = new JPanel(new BorderLayout());
-        topRow.setOpaque(false);
-        topRow.add(halo, BorderLayout.CENTER);
-        topRow.add(avatarCircle, BorderLayout.EAST);
+        JPanel textInfoPanel = new JPanel();
+        textInfoPanel.setOpaque(false);
+        textInfoPanel.setLayout(new BoxLayout(textInfoPanel, BoxLayout.Y_AXIS));
+        textInfoPanel.add(halo);
+        textInfoPanel.add(nim);
+        textInfoPanel.add(prodi);
 
-        profileCard.add(topRow);
-        profileCard.add(Box.createVerticalStrut(5));
-        profileCard.add(nim);
-        profileCard.add(Box.createVerticalStrut(5));
-        profileCard.add(prodi);
+        profileCard.add(textInfoPanel, BorderLayout.CENTER);
+        profileCard.add(avatarCircle, BorderLayout.EAST);
 
         left.add(profileCard);
         left.add(Box.createVerticalStrut(15));
@@ -125,28 +137,32 @@ public class DashboardFrame extends JFrame {
     }
 
     private JPanel createStatCard(String title, String value) {
-        JPanel card = new JPanel(new BorderLayout());
+        JPanel card = new JPanel(new BorderLayout(15, 0)); 
         card.setBackground(UIConstants.COLOR_CARD);
         card.setBorder(new EmptyBorder(15, 20, 15, 20));
 
         JLabel icon = new JLabel("🏛️");
         icon.setFont(new Font("SansSerif", Font.PLAIN, 24));
+        icon.setForeground(UIConstants.COLOR_TEXT_LIGHT); 
 
-        JPanel left = new JPanel();
-        left.setBackground(UIConstants.COLOR_CARD);
-        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+        JPanel textPanel = new JPanel();
+        textPanel.setBackground(UIConstants.COLOR_CARD);
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(UIConstants.FONT_NORMAL);
+        titleLabel.setForeground(UIConstants.COLOR_TEXT_DARK);
+
         JLabel valueLabel = new JLabel(value);
         valueLabel.setFont(UIConstants.FONT_SUBTITLE);
         valueLabel.setForeground(new Color(0, 130, 0));
 
-        left.add(titleLabel);
-        left.add(Box.createVerticalStrut(5));
-        left.add(valueLabel);
+        textPanel.add(titleLabel);
+        textPanel.add(Box.createVerticalStrut(5));
+        textPanel.add(valueLabel);
 
         card.add(icon, BorderLayout.WEST);
-        card.add(left, BorderLayout.CENTER);
+        card.add(textPanel, BorderLayout.CENTER);
         return card;
     }
 
@@ -193,55 +209,67 @@ public class DashboardFrame extends JFrame {
                                        String participants,
                                        String status,
                                        boolean canRegister) {
-        JPanel activity = new JPanel(new BorderLayout());
+        JPanel activity = new JPanel(new BorderLayout(15, 0)); 
         activity.setBackground(UIConstants.COLOR_CARD);
-        activity.setBorder(new EmptyBorder(5, 0, 5, 0));
+        activity.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(230, 230, 230)),
+                new EmptyBorder(10, 15, 10, 15) 
+        ));
 
         JPanel infoPanel = new JPanel();
         infoPanel.setBackground(UIConstants.COLOR_CARD);
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(UIConstants.FONT_NORMAL);
+        titleLabel.setForeground(UIConstants.COLOR_TEXT_DARK);
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         JLabel dateLabel = new JLabel(date);
         dateLabel.setFont(UIConstants.FONT_SMALL);
         dateLabel.setForeground(UIConstants.COLOR_TEXT_LIGHT);
+        dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         JLabel peopleLabel = new JLabel(participants);
         peopleLabel.setFont(UIConstants.FONT_SMALL);
         peopleLabel.setForeground(UIConstants.COLOR_TEXT_LIGHT);
+        peopleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         JLabel statusLabel = new JLabel(status);
         statusLabel.setFont(UIConstants.FONT_SMALL);
         statusLabel.setForeground(
                 "Selesai".equalsIgnoreCase(status) ?
                         new Color(150, 150, 150) : new Color(0, 150, 0)
         );
+        statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         infoPanel.add(titleLabel);
+        infoPanel.add(Box.createVerticalStrut(3));
         infoPanel.add(dateLabel);
+        infoPanel.add(Box.createVerticalStrut(3));
         infoPanel.add(peopleLabel);
+        infoPanel.add(Box.createVerticalStrut(5));
         infoPanel.add(statusLabel);
+
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(UIConstants.COLOR_CARD);
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+        buttonPanel.setAlignmentY(Component.CENTER_ALIGNMENT); 
 
         JButton detailButton = new JButton("Lihat Detail");
         styleSecondaryButton(detailButton);
+        detailButton.setAlignmentX(Component.RIGHT_ALIGNMENT); 
 
         JButton daftarButton = new JButton("Daftar");
         stylePrimaryGrayButton(daftarButton);
         daftarButton.setEnabled(canRegister);
+        daftarButton.setAlignmentX(Component.RIGHT_ALIGNMENT); 
 
-        JPanel row1 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 3));
-        row1.setBackground(UIConstants.COLOR_CARD);
-        row1.add(detailButton);
-
-        JPanel row2 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 3));
-        row2.setBackground(UIConstants.COLOR_CARD);
-        row2.add(daftarButton);
-
-        buttonPanel.add(row1);
-        buttonPanel.add(row2);
+        buttonPanel.add(detailButton);
+        buttonPanel.add(Box.createVerticalStrut(5));
+        buttonPanel.add(daftarButton);
 
         activity.add(infoPanel, BorderLayout.CENTER);
         activity.add(buttonPanel, BorderLayout.EAST);
@@ -270,24 +298,24 @@ public class DashboardFrame extends JFrame {
     }
 
     private JComponent createMenuItem(String iconText, String label, boolean selected) {
-        JPanel item = new JPanel(new BorderLayout());
+        JPanel item = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); 
         item.setOpaque(false);
         item.setBorder(new EmptyBorder(8, 5, 8, 5));
 
         JLabel icon = new JLabel(iconText);
         icon.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        icon.setForeground(Color.WHITE); 
 
         JLabel text = new JLabel(label);
         text.setFont(UIConstants.FONT_NORMAL);
         text.setForeground(Color.WHITE);
 
-        item.add(icon, BorderLayout.WEST);
-        item.add(Box.createHorizontalStrut(10), BorderLayout.CENTER);
-        item.add(text, BorderLayout.EAST);
+        item.add(icon);
+        item.add(text);
 
         if (selected) {
             item.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 4, 0, 0, Color.WHITE),
+                    BorderFactory.createMatteBorder(0, 4, 0, 0, Color.WHITE), 
                     new EmptyBorder(8, 5, 8, 5)
             ));
         }
@@ -302,6 +330,7 @@ public class DashboardFrame extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setOpaque(true); 
     }
 
     private void stylePrimaryGrayButton(JButton button) {
@@ -311,5 +340,6 @@ public class DashboardFrame extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setOpaque(true); 
     }
 }
