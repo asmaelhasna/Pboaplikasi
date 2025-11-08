@@ -33,7 +33,7 @@ public class LoginFrame extends JFrame {
     private JPanel createCardPanel() {
         JPanel card = new JPanel(new GridBagLayout());
         card.setBackground(UIConstants.COLOR_CARD);
-        card.setPreferredSize(new Dimension(820, 360));
+        card.setPreferredSize(new Dimension(820, 420)); 
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(220, 220, 220)),
                 new EmptyBorder(32, 40, 32, 40)
@@ -41,15 +41,18 @@ public class LoginFrame extends JFrame {
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.fill = GridBagConstraints.BOTH; 
+        gbc.weighty = 1.0; 
         gbc.insets = new Insets(0, 0, 0, 40);
 
         // kiri: logo
         gbc.gridx = 0;
+        gbc.weightx = 0.4; 
         card.add(createLeftPanel(), gbc);
 
         // kanan: form
         gbc.gridx = 1;
+        gbc.weightx = 0.6; 
         gbc.insets = new Insets(0, 0, 0, 0);
         card.add(createRightPanel(), gbc);
 
@@ -59,55 +62,54 @@ public class LoginFrame extends JFrame {
     private JPanel createLeftPanel() {
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(UIConstants.COLOR_CARD);
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-        leftPanel.setPreferredSize(new Dimension(260, 260));
+        leftPanel.setLayout(new GridBagLayout()); 
+        leftPanel.setPreferredSize(new Dimension(260, 0));
 
-        leftPanel.add(Box.createVerticalGlue());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.insets = new Insets(5, 0, 5, 0); 
 
         JLabel shield = new JLabel("🛡️", SwingConstants.CENTER);
-        shield.setAlignmentX(Component.CENTER_ALIGNMENT);
         shield.setFont(new Font("SansSerif", Font.PLAIN, 64));
+        gbc.gridy = 0;
+        leftPanel.add(shield, gbc);
 
-        JLabel gryffindor = new JLabel("GRYFFINDOR");
-        gryffindor.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel gryffindor = new JLabel("GRYFFINDOR", SwingConstants.CENTER);
         gryffindor.setFont(new Font("Serif", Font.BOLD, 26));
         gryffindor.setForeground(UIConstants.COLOR_PRIMARY);
+        gbc.gridy = 1;
+        leftPanel.add(gryffindor, gbc);
 
-        leftPanel.add(shield);
-        leftPanel.add(Box.createVerticalStrut(12));
-        leftPanel.add(gryffindor);
-
-        leftPanel.add(Box.createVerticalGlue());
         return leftPanel;
     }
 
     private JPanel createRightPanel() {
         JPanel rightPanel = new JPanel(new GridBagLayout());
         rightPanel.setBackground(UIConstants.COLOR_CARD);
-        rightPanel.setPreferredSize(new Dimension(360, 260));
+        rightPanel.setPreferredSize(new Dimension(360, 0)); 
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 0;
         gbc.gridwidth = 2;
-        gbc.weightx = 1.0;
-        gbc.insets = new Insets(0, 0, 20, 0);
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weightx = 1.0; 
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
 
         // Judul
-        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        titlePanel.setBackground(UIConstants.COLOR_CARD);
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0, 0, 20, 0);
         JLabel titleLabel = new JLabel("Login");
         titleLabel.setFont(UIConstants.FONT_TITLE);
         titleLabel.setForeground(UIConstants.COLOR_TEXT_DARK);
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        titlePanel.setBackground(UIConstants.COLOR_CARD);
         titlePanel.add(titleLabel);
         rightPanel.add(titlePanel, gbc);
 
+
         // Email label
         gbc.gridy++;
-        gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 5, 0);
-        gbc.anchor = GridBagConstraints.WEST;
         JLabel emailLabel = new JLabel("Email/NIM");
         emailLabel.setFont(UIConstants.FONT_NORMAL);
         rightPanel.add(emailLabel, gbc);
@@ -115,15 +117,12 @@ public class LoginFrame extends JFrame {
         // Email field
         gbc.gridy++;
         gbc.insets = new Insets(0, 0, 15, 0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
         emailField = new RoundedTextField();
-        emailField.setPreferredSize(new Dimension(260, 40));
         rightPanel.add(emailField, gbc);
 
         // Password label
         gbc.gridy++;
         gbc.insets = new Insets(0, 0, 5, 0);
-        gbc.fill = GridBagConstraints.NONE;
         JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setFont(UIConstants.FONT_NORMAL);
         rightPanel.add(passwordLabel, gbc);
@@ -131,56 +130,41 @@ public class LoginFrame extends JFrame {
         // Password field
         gbc.gridy++;
         gbc.insets = new Insets(0, 0, 12, 0);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
         passwordField = new RoundedPasswordField();
-        passwordField.setPreferredSize(new Dimension(260, 40));
         rightPanel.add(passwordField, gbc);
 
         // "Belum punya akun..."
         gbc.gridy++;
         gbc.insets = new Insets(0, 0, 4, 0);
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.WEST;
-
         JPanel helperPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        helperPanel.setBackground(UIConstants.COLOR_CARD);
-
+        helperPanel.setOpaque(false); 
         JLabel belum = new JLabel("Belum punya akun?");
         belum.setFont(UIConstants.FONT_SMALL);
         belum.setForeground(UIConstants.COLOR_TEXT_LIGHT);
-
         JLabel daftar = new JLabel("Silahkan daftar");
         daftar.setFont(UIConstants.FONT_SMALL);
         daftar.setForeground(UIConstants.COLOR_PRIMARY);
-
         helperPanel.add(belum);
         helperPanel.add(daftar);
         rightPanel.add(helperPanel, gbc);
 
         // "Lupa kata sandi?"
         gbc.gridy++;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        gbc.insets = new Insets(0, 0, 20, 0);
         JLabel lupa = new JLabel("Lupa kata sandi?");
         lupa.setFont(UIConstants.FONT_SMALL);
         lupa.setForeground(UIConstants.COLOR_PRIMARY);
         rightPanel.add(lupa, gbc);
 
-        // Spacer
-        gbc.gridy++;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        JPanel spacer = new JPanel();
-        spacer.setOpaque(false);
-        rightPanel.add(spacer, gbc);
-
         // Tombol "Masuk"
         gbc.gridy++;
-        gbc.weighty = 0;
-        gbc.insets = new Insets(10, 0, 0, 0);
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.SOUTHEAST;
+        gbc.weighty = 1.0; 
+        gbc.fill = GridBagConstraints.NONE; 
+        gbc.anchor = GridBagConstraints.SOUTHEAST; 
 
-        RoundedButton loginButton = new RoundedButton("Masuk");
+        RoundedButton loginButton = new RoundedButton("Masuk"); 
+        loginButton.setPreferredSize(new Dimension(140, 44)); 
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         buttonPanel.setOpaque(false);
         buttonPanel.add(loginButton);
