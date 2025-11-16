@@ -4,342 +4,169 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class DashboardFrame extends JFrame {
+// Sekarang mewarisi ListFrame untuk mendapatkan TopBar dan Sidebar navigasi
+public class DashboardFrame extends ListFrame {
 
     public DashboardFrame() {
-        setTitle("Siskema Gryffindor - Beranda");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1080, 720);
-        setLocationRelativeTo(null);
-        setMinimumSize(new Dimension(900, 600));
-
-        getContentPane().setBackground(UIConstants.COLOR_BACKGROUND);
-        setLayout(new BorderLayout());
-
-        add(createTopBar(), BorderLayout.NORTH);
-        add(createMainContent(), BorderLayout.CENTER);
+        super("Beranda");
+        // Semua setup Frame ada di ListFrame constructor
+    }
+    
+    // Implementasi dummy card untuk memenuhi abstract ListFrame
+    @Override
+    protected JPanel createCardContent(String title, String date, String participants, String status, boolean canRegister) {
+        return new JPanel();
     }
 
-    private JComponent createTopBar() {
-        JPanel top = new JPanel(new BorderLayout());
-        top.setBackground(Color.WHITE);
-        top.setBorder(new EmptyBorder(10, 20, 10, 20));
-
-        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        left.setBackground(Color.WHITE);
-
-        JLabel logo = new JLabel("🛡️");
-        logo.setFont(new Font("SansSerif", Font.PLAIN, 32));
-
-        JLabel title = new JLabel("Siskema Gryffindor");
-        title.setFont(new Font("SansSerif", Font.BOLD, 20));
-        title.setForeground(UIConstants.COLOR_TEXT_DARK);
-
-        left.add(logo);
-        left.add(title);
-
-        JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
-        right.setBackground(Color.WHITE);
-        JLabel burger = new JLabel("☰");
-        burger.setFont(new Font("SansSerif", Font.BOLD, 24));
-        right.add(burger);
-
-        top.add(left, BorderLayout.WEST);
-        top.add(right, BorderLayout.EAST);
-
-        return top;
-    }
-
-    private JComponent createMainContent() {
-        JPanel root = new JPanel(new BorderLayout());
+    // Mengimplementasikan konten utama Dashboard (3 kolom)
+    @Override
+    protected JPanel createCenterColumn() {
+        JPanel root = new JPanel(new BorderLayout(20, 0));
         root.setBackground(UIConstants.COLOR_BACKGROUND);
-        root.setBorder(new EmptyBorder(10, 20, 20, 20));
 
+        // Kiri: Profile & Statistik
         JPanel leftColumn = createLeftColumn();
-        leftColumn.setPreferredSize(new Dimension(320, 0));
-
-        JPanel centerColumn = createCenterColumn();
-
-        JPanel rightColumn = createRightMenu();
-        rightColumn.setPreferredSize(new Dimension(200, 0));
-
+        leftColumn.setMinimumSize(new Dimension(280, 0)); // Minimal agar tidak terlalu kecil
+        leftColumn.setPreferredSize(new Dimension(300, 0)); // Ukuran preferred
         root.add(leftColumn, BorderLayout.WEST);
+
+        // Tengah: Kegiatan Terbaru (RESPONSIVE)
+        JPanel centerColumn = createCenterDashboardContent();
         root.add(centerColumn, BorderLayout.CENTER);
-        root.add(rightColumn, BorderLayout.EAST);
 
         return root;
     }
 
+    // Bagian Kiri Dashboard (Profile dan Statistik)
     private JPanel createLeftColumn() {
-        JPanel left = new JPanel();
-        left.setBackground(UIConstants.COLOR_BACKGROUND);
-        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
-
-        // Profile Card
-        JPanel profileCard = new JPanel(new BorderLayout(0, 10)); 
-        profileCard.setBackground(UIConstants.COLOR_PRIMARY);
+        JPanel leftPanel = new JPanel();
+        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+        leftPanel.setBackground(UIConstants.COLOR_BACKGROUND);
+        
+        // Kartu Profile (Contoh)
+        JPanel profileCard = new JPanel();
+        profileCard.setLayout(new BoxLayout(profileCard, BoxLayout.Y_AXIS));
+        profileCard.setBackground(UIConstants.COLOR_CARD);
         profileCard.setBorder(new EmptyBorder(20, 20, 20, 20));
-        profileCard.setMaximumSize(new Dimension(Integer.MAX_VALUE, profileCard.getPreferredSize().height)); // Agar lebar maksimal
+        profileCard.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel halo = new JLabel("Halo, Asma Elhasna Hamid");
-        halo.setForeground(Color.WHITE);
-        halo.setFont(UIConstants.FONT_NORMAL);
+        JLabel avatar = new JLabel("🧑‍💻");
+        avatar.setFont(new Font("SansSerif", Font.PLAIN, 64));
+        avatar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profileCard.add(avatar);
+        profileCard.add(Box.createVerticalStrut(10));
 
-        JLabel nim = new JLabel("2407134924");
-        nim.setForeground(Color.WHITE);
+        JLabel name = new JLabel("Zhidan Iannov Saaba", SwingConstants.CENTER);
+        name.setFont(UIConstants.FONT_SUBTITLE);
+        name.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profileCard.add(name);
+        
+        JLabel nim = new JLabel("2407134924", SwingConstants.CENTER);
         nim.setFont(UIConstants.FONT_NORMAL);
+        nim.setForeground(UIConstants.COLOR_TEXT_LIGHT);
+        nim.setAlignmentX(Component.CENTER_ALIGNMENT);
+        profileCard.add(nim);
+        
+        profileCard.add(Box.createVerticalStrut(20));
 
-        JLabel prodi = new JLabel("Teknik Informatika | Fakultas Teknik");
-        prodi.setForeground(Color.WHITE);
-        prodi.setFont(UIConstants.FONT_SMALL);
-
-        // Avatar
-        JPanel avatarCircle = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(new Color(255, 255, 255, 60));
-                g2.fillOval(0, 0, getWidth(), getHeight());
-                g2.dispose();
-            }
-        };
-        avatarCircle.setOpaque(false);
-        avatarCircle.setPreferredSize(new Dimension(50, 50));
-        avatarCircle.setMaximumSize(new Dimension(50, 50));
-        avatarCircle.setLayout(new GridBagLayout()); 
-        JLabel avatarIcon = new JLabel("👤", SwingConstants.CENTER);
-        avatarIcon.setFont(new Font("SansSerif", Font.PLAIN, 28)); 
-        avatarCircle.add(avatarIcon); 
-
-        JPanel textInfoPanel = new JPanel();
-        textInfoPanel.setOpaque(false);
-        textInfoPanel.setLayout(new BoxLayout(textInfoPanel, BoxLayout.Y_AXIS));
-        textInfoPanel.add(halo);
-        textInfoPanel.add(nim);
-        textInfoPanel.add(prodi);
-
-        profileCard.add(textInfoPanel, BorderLayout.CENTER);
-        profileCard.add(avatarCircle, BorderLayout.EAST);
-
-        left.add(profileCard);
-        left.add(Box.createVerticalStrut(15));
-
-        left.add(createStatCard("UKM diikuti", "3"));
-        left.add(Box.createVerticalStrut(10));
-        left.add(createStatCard("Event diikuti", "3"));
-        left.add(Box.createVerticalStrut(10));
-        left.add(createStatCard("Sertifikat dimiliki", "3"));
-
-        left.add(Box.createVerticalGlue());
-        return left;
+        // Statistik (Contoh)
+        profileCard.add(createStatItem("Kegiatan Diikuti", "12", UIConstants.COLOR_PRIMARY));
+        profileCard.add(Box.createVerticalStrut(5));
+        profileCard.add(createStatItem("Total Poin", "450", new Color(0, 150, 0)));
+        profileCard.add(Box.createVerticalStrut(5));
+        profileCard.add(createStatItem("UKM Diikuti", "2", new Color(255, 165, 0)));
+        
+        leftPanel.add(profileCard);
+        leftPanel.add(Box.createVerticalGlue()); // Untuk menahan ke atas
+        
+        return leftPanel;
     }
 
-    private JPanel createStatCard(String title, String value) {
-        JPanel card = new JPanel(new BorderLayout(15, 0)); 
+    private JPanel createStatItem(String label, String value, Color color) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setOpaque(false);
+        panel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240, 240, 240)));
+
+        JLabel labelComp = new JLabel(label);
+        labelComp.setFont(UIConstants.FONT_NORMAL);
+        labelComp.setForeground(UIConstants.COLOR_TEXT_DARK);
+        panel.add(labelComp, BorderLayout.WEST);
+
+        JLabel valueComp = new JLabel(value);
+        valueComp.setFont(UIConstants.FONT_SUBTITLE);
+        valueComp.setForeground(color);
+        panel.add(valueComp, BorderLayout.EAST);
+        
+        return panel;
+    }
+
+    // Bagian Tengah Dashboard (Daftar Kegiatan Terbaru)
+    private JPanel createCenterDashboardContent() {
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBackground(UIConstants.COLOR_BACKGROUND);
+
+        JLabel title = new JLabel("Kegiatan Terbaru");
+        title.setFont(UIConstants.FONT_TITLE);
+        title.setForeground(UIConstants.COLOR_TEXT_DARK);
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        centerPanel.add(title);
+        centerPanel.add(Box.createVerticalStrut(15));
+        
+        // Kartu Kegiatan
+        JPanel list = new JPanel(new GridLayout(0, 1, 0, 10)); // Layout vertikal, 1 kolom
+        list.setOpaque(false);
+        
+        // Contoh data
+        list.add(createSimpleActivityCard("Webinar UI/UX Design", "12 Nov 2025", "Fakultas Teknik"));
+        list.add(createSimpleActivityCard("Lomba Karya Tulis Ilmiah", "20 Nov 2025", "BEM"));
+        list.add(createSimpleActivityCard("Workshop Bahasa Inggris", "25 Nov 2025", "UKM Bahasa"));
+        
+        // RESPONSIVE: Menggunakan JScrollPane agar list bisa digulir jika terlalu panjang
+        JScrollPane scrollPane = new JScrollPane(list);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        
+        centerPanel.add(scrollPane);
+        centerPanel.add(Box.createVerticalGlue());
+
+        return centerPanel;
+    }
+    
+    private JPanel createSimpleActivityCard(String title, String date, String organization) {
+        JPanel card = new JPanel(new BorderLayout(15, 0));
         card.setBackground(UIConstants.COLOR_CARD);
-        card.setBorder(new EmptyBorder(15, 20, 15, 20));
-
-        JLabel icon = new JLabel("🏛️");
-        icon.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        icon.setForeground(UIConstants.COLOR_TEXT_LIGHT); 
-
-        JPanel textPanel = new JPanel();
-        textPanel.setBackground(UIConstants.COLOR_CARD);
-        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
-
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(UIConstants.FONT_NORMAL);
-        titleLabel.setForeground(UIConstants.COLOR_TEXT_DARK);
-
-        JLabel valueLabel = new JLabel(value);
-        valueLabel.setFont(UIConstants.FONT_SUBTITLE);
-        valueLabel.setForeground(new Color(0, 130, 0));
-
-        textPanel.add(titleLabel);
-        textPanel.add(Box.createVerticalStrut(5));
-        textPanel.add(valueLabel);
-
-        card.add(icon, BorderLayout.WEST);
-        card.add(textPanel, BorderLayout.CENTER);
-        return card;
-    }
-
-    private JPanel createCenterColumn() {
-        JPanel center = new JPanel();
-        center.setBackground(UIConstants.COLOR_BACKGROUND);
-        center.setLayout(new BorderLayout());
-
-        JPanel card = new JPanel();
-        card.setBackground(UIConstants.COLOR_CARD);
-        card.setBorder(new EmptyBorder(20, 20, 20, 20));
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-
-        card.add(createActivityPanel(
-                "Webinar Teknologi Terkini",
-                "12 November 2025",
-                "50 orang",
-                "Aktif",
-                true
-        ));
-        card.add(Box.createVerticalStrut(15));
-        card.add(createActivityPanel(
-                "Lomba Desain Grafis",
-                "20 November 2025",
-                "100 orang",
-                "Aktif",
-                true
-        ));
-        card.add(Box.createVerticalStrut(15));
-        card.add(createActivityPanel(
-                "Workshop Penulisan Artikel",
-                "26 November 2025",
-                "45 orang",
-                "Selesai",
-                false
-        ));
-
-        center.add(card, BorderLayout.CENTER);
-        return center;
-    }
-
-    private JPanel createActivityPanel(String title,
-                                       String date,
-                                       String participants,
-                                       String status,
-                                       boolean canRegister) {
-        JPanel activity = new JPanel(new BorderLayout(15, 0)); 
-        activity.setBackground(UIConstants.COLOR_CARD);
-        activity.setBorder(BorderFactory.createCompoundBorder(
+        card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(230, 230, 230)),
-                new EmptyBorder(10, 15, 10, 15) 
+                new EmptyBorder(15, 20, 15, 20) 
         ));
+        // RESPONSIVE: Memastikan card meregang horizontal
+        card.setMaximumSize(new Dimension(Integer.MAX_VALUE, card.getPreferredSize().height));
 
-        JPanel infoPanel = new JPanel();
-        infoPanel.setBackground(UIConstants.COLOR_CARD);
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        JLabel icon = new JLabel("📅");
+        icon.setFont(new Font("SansSerif", Font.PLAIN, 32));
+        card.add(icon, BorderLayout.WEST);
 
+        JPanel info = new JPanel(new GridLayout(2, 1));
+        info.setOpaque(false);
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(UIConstants.FONT_NORMAL);
-        titleLabel.setForeground(UIConstants.COLOR_TEXT_DARK);
-        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        titleLabel.setFont(UIConstants.FONT_SUBTITLE);
+        JLabel subtitleLabel = new JLabel(date + " | Oleh: " + organization);
+        subtitleLabel.setFont(UIConstants.FONT_NORMAL);
+        subtitleLabel.setForeground(UIConstants.COLOR_TEXT_LIGHT);
+        info.add(titleLabel);
+        info.add(subtitleLabel);
+        card.add(info, BorderLayout.CENTER);
 
-        JLabel dateLabel = new JLabel(date);
-        dateLabel.setFont(UIConstants.FONT_SMALL);
-        dateLabel.setForeground(UIConstants.COLOR_TEXT_LIGHT);
-        dateLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JLabel peopleLabel = new JLabel(participants);
-        peopleLabel.setFont(UIConstants.FONT_SMALL);
-        peopleLabel.setForeground(UIConstants.COLOR_TEXT_LIGHT);
-        peopleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JLabel statusLabel = new JLabel(status);
-        statusLabel.setFont(UIConstants.FONT_SMALL);
-        statusLabel.setForeground(
-                "Selesai".equalsIgnoreCase(status) ?
-                        new Color(150, 150, 150) : new Color(0, 150, 0)
-        );
-        statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        infoPanel.add(titleLabel);
-        infoPanel.add(Box.createVerticalStrut(3));
-        infoPanel.add(dateLabel);
-        infoPanel.add(Box.createVerticalStrut(3));
-        infoPanel.add(peopleLabel);
-        infoPanel.add(Box.createVerticalStrut(5));
-        infoPanel.add(statusLabel);
-
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(UIConstants.COLOR_CARD);
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
-        buttonPanel.setAlignmentY(Component.CENTER_ALIGNMENT); 
-
-        JButton detailButton = new JButton("Lihat Detail");
-        styleSecondaryButton(detailButton);
-        detailButton.setAlignmentX(Component.RIGHT_ALIGNMENT); 
-
-        JButton daftarButton = new JButton("Daftar");
-        stylePrimaryGrayButton(daftarButton);
-        daftarButton.setEnabled(canRegister);
-        daftarButton.setAlignmentX(Component.RIGHT_ALIGNMENT); 
-
-        buttonPanel.add(detailButton);
-        buttonPanel.add(Box.createVerticalStrut(5));
-        buttonPanel.add(daftarButton);
-
-        activity.add(infoPanel, BorderLayout.CENTER);
-        activity.add(buttonPanel, BorderLayout.EAST);
-
-        return activity;
-    }
-
-    private JPanel createRightMenu() {
-        JPanel menu = new JPanel();
-        menu.setBackground(UIConstants.COLOR_PRIMARY);
-        menu.setLayout(new BoxLayout(menu, BoxLayout.Y_AXIS));
-        menu.setBorder(new EmptyBorder(20, 20, 20, 20));
-
-        menu.add(createMenuItem("🏠", "Beranda", true));
-        menu.add(Box.createVerticalStrut(10));
-        menu.add(createMenuItem("🏫", "UKM", false));
-        menu.add(Box.createVerticalStrut(10));
-        menu.add(createMenuItem("📅", "Kegiatan", false));
-        menu.add(Box.createVerticalStrut(10));
-        menu.add(createMenuItem("🔔", "Notifikasi", false));
-        menu.add(Box.createVerticalStrut(10));
-        menu.add(createMenuItem("🚪", "Keluar", false));
-
-        menu.add(Box.createVerticalGlue());
-        return menu;
-    }
-
-    private JComponent createMenuItem(String iconText, String label, boolean selected) {
-        JPanel item = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0)); 
-        item.setOpaque(false);
-        item.setBorder(new EmptyBorder(8, 5, 8, 5));
-
-        JLabel icon = new JLabel(iconText);
-        icon.setFont(new Font("SansSerif", Font.PLAIN, 20));
-        icon.setForeground(Color.WHITE); 
-
-        JLabel text = new JLabel(label);
-        text.setFont(UIConstants.FONT_NORMAL);
-        text.setForeground(Color.WHITE);
-
-        item.add(icon);
-        item.add(text);
-
-        if (selected) {
-            item.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 4, 0, 0, Color.WHITE), 
-                    new EmptyBorder(8, 5, 8, 5)
-            ));
-        }
-
-        return item;
-    }
-
-    private void styleSecondaryButton(JButton button) {
-        button.setFont(UIConstants.FONT_SMALL);
-        button.setBackground(UIConstants.COLOR_BUTTON_GRAY);
-        button.setForeground(UIConstants.COLOR_TEXT_DARK);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.setOpaque(true); 
-    }
-
-    private void stylePrimaryGrayButton(JButton button) {
-        button.setFont(UIConstants.FONT_SMALL);
-        button.setBackground(UIConstants.COLOR_BUTTON_GRAY);
-        button.setForeground(UIConstants.COLOR_TEXT_DARK);
-        button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(5, 25, 5, 25));
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        button.setOpaque(true); 
+        JButton detailButton = new JButton("Detail");
+        detailButton.setFont(UIConstants.FONT_NORMAL);
+        detailButton.setBackground(UIConstants.COLOR_BUTTON_GRAY);
+        detailButton.setFocusPainted(false);
+        detailButton.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        detailButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        
+        card.add(detailButton, BorderLayout.EAST);
+        
+        return card;
     }
 }
