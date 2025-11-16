@@ -1,11 +1,11 @@
 package com.siskema.gryffindor.model;
 
 public class User {
-    private String username; // Ini adalah NIM/ID unik
+    private String username; 
     private String password;
     private String fullName;
     private UserRole role;
-    private String organizationName; // Nama UKM/Himpunan jika rolenya Penyelenggara
+    private String organizationName; 
 
     public User(String username, String password, String fullName, UserRole role, String organizationName) {
         this.username = username;
@@ -15,7 +15,6 @@ public class User {
         this.organizationName = organizationName;
     }
 
-    // --- Getters dan Setters ---
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
     public String getPassword() { return password; }

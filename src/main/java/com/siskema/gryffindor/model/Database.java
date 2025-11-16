@@ -12,7 +12,6 @@ public class Database {
         this.activities = new ArrayList<>();
     }
 
-    // Getters
     public List<User> getUsers() { return users; }
     public List<Activity> getActivities() { return activities; }
 }

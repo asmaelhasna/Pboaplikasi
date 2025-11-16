@@ -1,8 +1,8 @@
 package com.siskema.gryffindor.ui;
 
-import com.siskema.gryffindor.model.User; // BARU
-import com.siskema.gryffindor.model.UserRole; // BARU
-import com.siskema.gryffindor.service.SessionManager; // BARU
+import com.siskema.gryffindor.model.User;
+import com.siskema.gryffindor.model.UserRole;
+import com.siskema.gryffindor.service.SessionManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,10 +12,10 @@ import java.awt.event.MouseEvent;
 
 public abstract class ListFrame extends JFrame {
 
-    protected User currentUser; // <-- BARU: Menyimpan user yang login
+    protected User currentUser;
 
-    public ListFrame(String title, User user) { // <-- DIUBAH
-        this.currentUser = user; // <-- BARU
+    public ListFrame(String title, User user) {
+        this.currentUser = user;
 
         setTitle("Siskema Gryffindor - " + title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,9 +31,7 @@ public abstract class ListFrame extends JFrame {
         add(createMainContent(), BorderLayout.CENTER);
     }
 
-    // Top Bar (Header)
     private JComponent createTopBar() {
-        // ... (Implementasi SAMA) ...
         JPanel top = new JPanel(new BorderLayout());
         top.setBackground(Color.WHITE);
         top.setBorder(new EmptyBorder(10, 20, 10, 20));
@@ -47,8 +45,7 @@ public abstract class ListFrame extends JFrame {
         left.add(title);
         JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
         right.setBackground(Color.WHITE);
-        // Tampilkan nama user di Top Bar
-        JLabel profileName = new JLabel(currentUser.getFullName() + " 👤"); // <-- DIUBAH
+        JLabel profileName = new JLabel(currentUser.getFullName() + " 👤");
         profileName.setFont(new Font("SansSerif", Font.PLAIN, 16));
         right.add(profileName);
         top.add(left, BorderLayout.WEST);
@@ -57,18 +54,16 @@ public abstract class ListFrame extends JFrame {
     }
 
     private JComponent createMainContent() {
-        // ... (Implementasi SAMA) ...
         JPanel root = new JPanel(new BorderLayout(20, 0));
         root.setBackground(UIConstants.COLOR_BACKGROUND);
         root.setBorder(new EmptyBorder(20, 20, 20, 20));
-        JPanel rightColumn = createRightMenu(); // <-- Panggil method yg diubah
+        JPanel rightColumn = createRightMenu();
         root.add(rightColumn, BorderLayout.EAST);
         JPanel centerColumn = createCenterColumn();
         root.add(centerColumn, BorderLayout.CENTER);
         return root;
     }
 
-    // Menu Sidebar Kanan (DIUBAH TOTAL)
     private JPanel createRightMenu() {
         JPanel menu = new JPanel();
         menu.setBackground(UIConstants.COLOR_PRIMARY);
@@ -77,7 +72,6 @@ public abstract class ListFrame extends JFrame {
         menu.setMinimumSize(new Dimension(180, 0));
         menu.setPreferredSize(new Dimension(200, 0));
 
-        // --- ROLE BASED MENU ---
         menu.add(createMenuItem("🏠", "Beranda", this instanceof DashboardFrame, "Dashboard"));
         menu.add(Box.createVerticalStrut(10));
 
@@ -105,9 +99,7 @@ public abstract class ListFrame extends JFrame {
         return menu;
     }
 
-    // Item Menu dengan logika Navigasi (DIUBAH)
     private JComponent createMenuItem(String iconText, String label, boolean selected, String target) {
-        // ... (Styling SAMA) ...
         JPanel item = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         item.setOpaque(false);
         item.setBorder(new EmptyBorder(8, 5, 8, 5));
@@ -129,13 +121,11 @@ public abstract class ListFrame extends JFrame {
             ));
         }
 
-        // --- LOGIKA NAVIGASI (DIUBAH) ---
         item.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Jangan lakukan navigasi jika sudah di halaman yang sama
-                if (selected) return; 
-                
+                if (selected) return;
+
                 switch (target) {
                     case "Dashboard":
                         new DashboardFrame(currentUser).setVisible(true);
@@ -149,7 +139,6 @@ public abstract class ListFrame extends JFrame {
                         new ActivityListFrame(currentUser).setVisible(true);
                         dispose();
                         break;
-                    // --- TARGET BARU ---
                     case "ManageActivity":
                         new ManageActivityFrame(currentUser).setVisible(true);
                         dispose();
@@ -163,7 +152,7 @@ public abstract class ListFrame extends JFrame {
                         dispose();
                         break;
                     case "Logout":
-                        SessionManager.getInstance().logout(); // Hapus sesi
+                        SessionManager.getInstance().logout();
                         new LoginFrame().setVisible(true);
                         dispose();
                         break;
@@ -174,7 +163,6 @@ public abstract class ListFrame extends JFrame {
         return item;
     }
 
-    // Abstract methods (SAMA)
     protected abstract JPanel createCenterColumn();
     protected abstract JPanel createCardContent(String title, String date, String participants, String status, boolean canRegister);
 }

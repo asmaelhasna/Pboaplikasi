@@ -24,6 +24,12 @@
       "password": "123123",
       "fullName": "Zhidan",
       "role": "MAHASISWA"
+    },
+    {
+      "username": "asdfas",
+      "password": "adfsdf",
+      "fullName": "afdadf",
+      "role": "MAHASISWA"
     }
   ],
   "activities": [
@@ -36,7 +42,8 @@
       "description": "Deskripsi webinar...",
       "status": "APPROVED",
       "registeredParticipants": [
-        "123"
+        "123",
+        "mhs"
       ]
     },
     {

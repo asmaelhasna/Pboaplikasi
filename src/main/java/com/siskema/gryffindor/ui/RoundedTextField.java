@@ -10,9 +10,9 @@ public class RoundedTextField extends JTextField {
 
     public RoundedTextField() {
         super();
-        setOpaque(false); // kita gambar background sendiri
+        setOpaque(false);
         setBackground(Color.WHITE);
-        setBorder(new EmptyBorder(8, 10, 8, 10)); // padding dalam
+        setBorder(new EmptyBorder(8, 10, 8, 10));
         setFont(UIConstants.FONT_NORMAL);
         setForeground(UIConstants.COLOR_TEXT_DARK);
     }
@@ -30,7 +30,6 @@ public class RoundedTextField extends JTextField {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                             RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // background rounded
         g2.setColor(getBackground());
         g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arc, arc);
         g2.dispose();

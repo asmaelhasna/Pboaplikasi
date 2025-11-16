@@ -1,8 +1,8 @@
 package com.siskema.gryffindor.ui;
 
-import com.siskema.gryffindor.model.User; // BARU
-import com.siskema.gryffindor.model.UserRole; // BARU
-import com.siskema.gryffindor.service.DataService; // BARU
+import com.siskema.gryffindor.model.User;
+import com.siskema.gryffindor.model.UserRole;
+import com.siskema.gryffindor.service.DataService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,16 +12,14 @@ import java.awt.event.MouseEvent;
 
 public class RegistrationFrame extends JFrame {
 
-    // --- BARU ---
     private DataService dataService;
     private RoundedTextField nimField = new RoundedTextField();
     private RoundedTextField nameField = new RoundedTextField();
     private RoundedTextField emailField = new RoundedTextField();
     private RoundedPasswordField passwordField = new RoundedPasswordField();
-    // ... tambahkan field lain jika perlu ...
 
     public RegistrationFrame() {
-        this.dataService = new DataService(); // <-- BARU
+        this.dataService = new DataService();
 
         setTitle("Siskema Gryffindor - Daftar Akun Baru");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -41,7 +39,6 @@ public class RegistrationFrame extends JFrame {
     }
 
     private JPanel createCardPanel() {
-        // ... (Implementasi SAMA) ...
         JPanel card = new JPanel(new GridBagLayout());
         card.setBackground(UIConstants.COLOR_CARD);
         card.setBorder(BorderFactory.createCompoundBorder(
@@ -68,7 +65,6 @@ public class RegistrationFrame extends JFrame {
     }
 
     private JPanel createLeftPanel() {
-        // ... (Implementasi SAMA) ...
         JPanel leftPanel = new JPanel();
         leftPanel.setBackground(UIConstants.COLOR_CARD);
         leftPanel.setLayout(new GridBagLayout());
@@ -98,7 +94,6 @@ public class RegistrationFrame extends JFrame {
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBorder(new EmptyBorder(0, 20, 0, 20));
 
-        // ... (Judul Halaman & Link Login SAMA) ...
         JLabel titleLabel = new JLabel("Daftar Akun Baru");
         titleLabel.setFont(UIConstants.FONT_TITLE);
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -117,31 +112,20 @@ public class RegistrationFrame extends JFrame {
         formPanel.add(loginLink);
         formPanel.add(Box.createVerticalStrut(25));
 
-
-        // --- Informasi Pribadi (DIUBAH) ---
         formPanel.add(createSubtitle("Informasi Pribadi"));
-        formPanel.add(createInputField("NIM (sebagai username)", nimField)); // Diubah
-        formPanel.add(createInputField("Nama Lengkap", nameField)); // Diubah
-        formPanel.add(createInputField("Email", emailField)); // Diubah
-        // (Hapus field yg tidak perlu atau tambahkan field baru di sini)
+        formPanel.add(createInputField("NIM (sebagai username)", nimField));
+        formPanel.add(createInputField("Nama Lengkap", nameField));
+        formPanel.add(createInputField("Email", emailField));
         formPanel.add(Box.createVerticalStrut(25));
 
-        // --- Hapus Informasi Akademik (jika tidak disimpan) ---
-        // formPanel.add(createSubtitle("Informasi Akademik")); ...
-
-        // --- Password (DIUBAH) ---
         formPanel.add(createSubtitle("Password"));
-        formPanel.add(createPasswordField("Password", passwordField)); // Diubah
+        formPanel.add(createPasswordField("Password", passwordField));
         formPanel.add(Box.createVerticalStrut(40));
 
-        // Tombol Daftar
         RoundedButton registerButton = new RoundedButton("Daftar");
         registerButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        // --- NAVIGASI (DIUBAH) ---
-        registerButton.addActionListener(e -> {
-            registerUser(); // Panggil method registrasi
-        });
+        registerButton.addActionListener(e -> registerUser());
 
         formPanel.add(registerButton);
         formPanel.add(Box.createVerticalStrut(20));
@@ -149,7 +133,6 @@ public class RegistrationFrame extends JFrame {
         return formPanel;
     }
 
-    // --- METHOD BARU ---
     private void registerUser() {
         String nim = nimField.getText();
         String name = nameField.getText();
@@ -161,7 +144,6 @@ public class RegistrationFrame extends JFrame {
             return;
         }
 
-        // Buat user baru (default sebagai MAHASISWA)
         User newUser = new User(nim, pass, name, UserRole.MAHASISWA, null);
         
         try {
@@ -174,7 +156,6 @@ public class RegistrationFrame extends JFrame {
         }
     }
 
-    // ... (Helper methods createSubtitle, createInputField, createPasswordField SAMA) ...
     private JLabel createSubtitle(String text) {
         JLabel label = new JLabel(text);
         label.setFont(UIConstants.FONT_SUBTITLE);
@@ -182,7 +163,7 @@ public class RegistrationFrame extends JFrame {
         return label;
     }
 
-    private JPanel createInputField(String labelText, RoundedTextField field) { // Diubah
+    private JPanel createInputField(String labelText, RoundedTextField field) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
@@ -199,7 +180,7 @@ public class RegistrationFrame extends JFrame {
         return panel;
     }
 
-    private JPanel createPasswordField(String labelText, RoundedPasswordField field) { // Diubah
+    private JPanel createPasswordField(String labelText, RoundedPasswordField field) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);

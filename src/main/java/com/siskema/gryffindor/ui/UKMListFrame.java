@@ -1,19 +1,16 @@
 package com.siskema.gryffindor.ui;
 
-import com.siskema.gryffindor.model.User; // BARU
+import com.siskema.gryffindor.model.User; 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class UKMListFrame extends ListFrame {
 
-    public UKMListFrame(User user) { // <-- DIUBAH
-        super("Daftar UKM", user); // <-- DIUBAH
+    public UKMListFrame(User user) { 
+        super("Daftar UKM", user); 
     }
 
-    // ... (Semua method lain SAMA, masih pakai data dummy) ...
-    // ... (createCenterColumn, createCardContent, styleButton) ...
-    
     @Override
     protected JPanel createCenterColumn() {
         JPanel center = new JPanel(new BorderLayout(0, 15));
@@ -91,11 +88,30 @@ public class UKMListFrame extends ListFrame {
         gbc.anchor = GridBagConstraints.EAST;
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonPanel.setBackground(UIConstants.COLOR_CARD);
+        
         JButton detailButton = new JButton("Lihat Detail");
         styleButton(detailButton, UIConstants.COLOR_BUTTON_GRAY, UIConstants.COLOR_TEXT_DARK);
+
+        detailButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, 
+                "Detail UKM: " + title + "\nAnggota: " + participants + "\nDidirikan: " + estDate + "\n\n(Ini adalah placeholder detail UKM)", 
+                "Detail " + title, 
+                JOptionPane.INFORMATION_MESSAGE);
+        });
+
         JButton daftarButton = new JButton("Gabung");
-        styleButton(daftarButton, UIConstants.COLOR_PRIMARY, Color.WHITE);
+        styleButton(daftarButton, UIConstants.COLOR_PRIMARY, Color.BLACK);
         daftarButton.setEnabled(canRegister);
+
+        daftarButton.addActionListener(e -> {
+            if (canRegister) {
+                JOptionPane.showMessageDialog(this, 
+                    "Anda berhasil mengajukan permohonan gabung ke UKM " + title + "! Mohon tunggu persetujuan.", 
+                    "Permohonan Terkirim", 
+                    JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        
         buttonPanel.add(detailButton);
         buttonPanel.add(daftarButton);
         ukm.add(buttonPanel, gbc);

@@ -30,7 +30,6 @@ public class ApprovalFrame extends ListFrame {
         title.setFont(UIConstants.FONT_TITLE);
         center.add(title, BorderLayout.NORTH);
 
-        // --- List Panel ---
         listPanel = new JPanel();
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
         listPanel.setBackground(UIConstants.COLOR_BACKGROUND);
@@ -97,10 +96,10 @@ public class ApprovalFrame extends ListFrame {
         JButton rejectButton = new JButton("Tolak");
         rejectButton.setBackground(UIConstants.COLOR_PRIMARY);
         rejectButton.setForeground(Color.WHITE);
-        rejectButton.setOpaque(true); // <-- PERBAIKAN 1
-        rejectButton.setFocusPainted(false); // <-- PERBAIKAN 2
-        rejectButton.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20)); // <-- Styling
-        rejectButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // <-- Styling
+        rejectButton.setOpaque(true);
+        rejectButton.setFocusPainted(false);
+        rejectButton.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        rejectButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         rejectButton.addActionListener(e -> {
             activity.setStatus(ActivityStatus.REJECTED);
             dataService.updateActivity(activity);
@@ -108,12 +107,12 @@ public class ApprovalFrame extends ListFrame {
         });
         
         JButton approveButton = new JButton("Setujui");
-        approveButton.setBackground(new Color(0, 150, 0)); // Hijau
+        approveButton.setBackground(new Color(0, 150, 0));
         approveButton.setForeground(Color.WHITE);
-        approveButton.setOpaque(true); // <-- PERBAIKAN 3
-        approveButton.setFocusPainted(false); // <-- PERBAIKAN 4
-        approveButton.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20)); // <-- Styling
-        approveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // <-- Styling
+        approveButton.setOpaque(true);
+        approveButton.setFocusPainted(false);
+        approveButton.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        approveButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         approveButton.addActionListener(e -> {
             activity.setStatus(ActivityStatus.APPROVED);
             dataService.updateActivity(activity);

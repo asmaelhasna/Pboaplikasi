@@ -6,12 +6,12 @@ import java.awt.*;
 
 public class RoundedButton extends JButton {
 
-    private int arc = 20;   // besar lengkung sudut
+    private int arc = 20;
 
     public RoundedButton(String text) {
         super(text);
         setFocusPainted(false);
-        setContentAreaFilled(false);  // kita gambar background sendiri
+        setContentAreaFilled(false);
         setBorderPainted(false);
         setOpaque(false);
         setForeground(Color.WHITE);
@@ -24,7 +24,7 @@ public class RoundedButton extends JButton {
     @Override
     public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
-        if (d.height < 44) d.height = 44;   // tinggi minimal
+        if (d.height < 44) d.height = 44;
         if (d.width < 140) d.width = 140;
         return d;
     }
@@ -41,11 +41,9 @@ public class RoundedButton extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                             RenderingHints.VALUE_ANTIALIAS_ON);
 
-        // background rounded
         g2.setColor(getBackground());
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
 
-        // teks di tengah
         g2.setFont(getFont());
         FontMetrics fm = g2.getFontMetrics();
         String text = getText();
@@ -64,6 +62,5 @@ public class RoundedButton extends JButton {
 
     @Override
     protected void paintBorder(Graphics g) {
-        // tidak ada border tambahan
     }
 }

@@ -1,23 +1,23 @@
 package com.siskema.gryffindor.ui;
 
-import com.siskema.gryffindor.model.Activity; // BARU
-import com.siskema.gryffindor.model.User; // BARU
-import com.siskema.gryffindor.service.DataService; // BARU
+import com.siskema.gryffindor.model.Activity;
+import com.siskema.gryffindor.model.User;
+import com.siskema.gryffindor.service.DataService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.List; // BARU
+import java.util.List;
 
 public class ActivityListFrame extends ListFrame {
 
-    private DataService dataService; // <-- BARU
-    private JPanel listPanel; // <-- BARU
+    private DataService dataService;
+    private JPanel listPanel;
 
-    public ActivityListFrame(User user) { // <-- DIUBAH
-        super("Daftar Kegiatan", user); // <-- DIUBAH
-        this.dataService = new DataService(); // <-- BARU
-        loadApprovedActivities(); // <-- BARU
+    public ActivityListFrame(User user) {
+        super("Daftar Kegiatan", user);
+        this.dataService = new DataService();
+        loadApprovedActivities();
     }
 
     @Override
@@ -29,7 +29,6 @@ public class ActivityListFrame extends ListFrame {
         title.setFont(UIConstants.FONT_TITLE);
         center.add(title, BorderLayout.NORTH);
 
-        // ... (Search Panel SAMA) ...
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         searchPanel.setBackground(UIConstants.COLOR_BACKGROUND);
         RoundedTextField searchField = new RoundedTextField();
@@ -38,8 +37,7 @@ public class ActivityListFrame extends ListFrame {
         searchField.setPreferredSize(new Dimension(350, 38));
         searchPanel.add(searchField);
 
-        // --- List Kegiatan (DIUBAH) ---
-        listPanel = new JPanel(); // <-- Pindahkan inisialisasi ke atas
+        listPanel = new JPanel();
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
         listPanel.setBackground(UIConstants.COLOR_BACKGROUND);
         listPanel.setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -57,7 +55,6 @@ public class ActivityListFrame extends ListFrame {
         return center;
     }
 
-    // --- METHOD BARU ---
     private void loadApprovedActivities() {
         listPanel.removeAll();
         List<Activity> activities = dataService.getApprovedActivities();
@@ -68,7 +65,6 @@ public class ActivityListFrame extends ListFrame {
             listPanel.add(emptyLabel);
         } else {
             for (Activity activity : activities) {
-                // Kita override createCardContent karena butuh objek Activity
                 listPanel.add(createActivityCard(activity));
                 listPanel.add(Box.createVerticalStrut(10));
             }
@@ -77,15 +73,12 @@ public class ActivityListFrame extends ListFrame {
         listPanel.revalidate();
         listPanel.repaint();
     }
-    
-    // Method ini tidak digunakan lagi, tapi harus ada karena abstract
+
     @Override
     protected JPanel createCardContent(String title, String date, String participants, String status, boolean canRegister) {
         return new JPanel();
     }
 
-    // --- METHOD BARU ---
-    // (Implementasi createCardContent yang lama, tapi menerima Activity)
     protected JPanel createActivityCard(Activity activity) {
         JPanel card = new JPanel(new GridBagLayout());
         card.setBackground(UIConstants.COLOR_CARD);
@@ -102,7 +95,6 @@ public class ActivityListFrame extends ListFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Info Panel
         JPanel infoPanel = new JPanel();
         infoPanel.setBackground(UIConstants.COLOR_CARD);
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -118,7 +110,6 @@ public class ActivityListFrame extends ListFrame {
 
         card.add(infoPanel, gbc);
 
-        // Button Panel
         gbc.gridx = 1;
         gbc.weightx = 0.0;
         gbc.fill = GridBagConstraints.NONE;
@@ -130,14 +121,10 @@ public class ActivityListFrame extends ListFrame {
         JButton detailButton = new JButton("Lihat Detail");
         styleButton(detailButton, UIConstants.COLOR_BUTTON_GRAY, UIConstants.COLOR_TEXT_DARK);
 
-        // --- NAVIGASI KE DETAIL (DIUBAH) ---
         detailButton.addActionListener(e -> {
-            // Kirim currentUser dan Activity yang dipilih
             new ActivityDetailFrame(currentUser, activity).setVisible(true);
             dispose();
         });
-
-        // (Tombol Daftar dihapus dari sini, pindah ke DetailFrame)
 
         buttonPanel.add(detailButton);
         card.add(buttonPanel, gbc);
@@ -145,7 +132,6 @@ public class ActivityListFrame extends ListFrame {
         return card;
     }
 
-    // Utility untuk styling tombol
     private void styleButton(JButton button, Color background, Color foreground) {
         button.setFont(UIConstants.FONT_SMALL);
         button.setBackground(background);

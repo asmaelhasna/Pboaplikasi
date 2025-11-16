@@ -36,14 +36,12 @@ public class DataService {
 
     private void initializeEmptyDatabase() {
         database = new Database();
-        // Buat user default untuk testing
         database.getUsers().add(new User("mhs", "123", "Mahasiswa Satu", UserRole.MAHASISWA, null));
         database.getUsers().add(new User("ukm", "123", "UKM Mapala", UserRole.PENYELENGGARA, "Mapala"));
         database.getUsers().add(new User("pkm", "123", "Admin PKM", UserRole.PKM, null));
-        
-        // Buat data kegiatan default
+    
         Activity act1 = new Activity("Webinar Teknologi", "Mapala", "20 Nov 2025", "Aula FT", "Deskripsi webinar...");
-        act1.setStatus(ActivityStatus.APPROVED); // Anggap sudah di-approve
+        act1.setStatus(ActivityStatus.APPROVED); 
         database.getActivities().add(act1);
     }
 
@@ -64,14 +62,12 @@ public class DataService {
         return null;
     }
 
-    // --- METHOD BARU DITAMBAHKAN ---
     public User getUserByUsername(String username) {
         return database.getUsers().stream()
                 .filter(user -> user.getUsername().equals(username))
                 .findFirst()
                 .orElse(null);
     }
-    // --- AKHIR METHOD BARU ---
 
     public void addUser(User user) {
         database.getUsers().add(user);
@@ -94,8 +90,6 @@ public class DataService {
             saveData();
         }
     }
-
-    // --- Methods untuk mengambil data ---
 
     public List<Activity> getAllActivities() {
         return database.getActivities();

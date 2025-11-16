@@ -7,25 +7,23 @@ import java.util.UUID;
 public class Activity {
     private String id;
     private String name;
-    private String organizerName; // UKM/Himpunan penyelenggara
+    private String organizerName; 
     private String date;
     private String location;
     private String description;
     private ActivityStatus status;
-    private List<String> registeredParticipants; // List of usernames (NIM)
-
+    private List<String> registeredParticipants; 
     public Activity(String name, String organizerName, String date, String location, String description) {
-        this.id = UUID.randomUUID().toString(); // ID unik
+        this.id = UUID.randomUUID().toString(); 
         this.name = name;
         this.organizerName = organizerName;
         this.date = date;
         this.location = location;
         this.description = description;
-        this.status = ActivityStatus.PENDING_APPROVAL; // Default status
+        this.status = ActivityStatus.PENDING_APPROVAL; 
         this.registeredParticipants = new ArrayList<>();
     }
 
-    // --- Getters dan Setters ---
     public String getId() { return id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
