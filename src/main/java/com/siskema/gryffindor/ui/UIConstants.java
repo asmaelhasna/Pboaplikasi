@@ -1,20 +1,22 @@
 package com.siskema.gryffindor.ui;
 
-import java.awt.Color;
-import java.awt.Font;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class UIConstants {
 
-    public static final Color COLOR_PRIMARY = new Color(0x9A, 0x24, 0x2C);
-    public static final Color COLOR_PRIMARY_DARK = new Color(120, 20, 30);
-    public static final Color COLOR_BACKGROUND = new Color(245, 245, 245);
-    public static final Color COLOR_CARD = Color.WHITE;
-    public static final Color COLOR_TEXT_DARK = new Color(40, 40, 40);
-    public static final Color COLOR_TEXT_LIGHT = new Color(130, 130, 130);
-    public static final Color COLOR_BUTTON_GRAY = new Color(230, 230, 230);
+    // Konversi warna ke String Hex untuk CSS
+    public static final String HEX_PRIMARY = "#9A242C";
+    public static final String HEX_PRIMARY_DARK = "#78141E";
+    public static final String HEX_BACKGROUND = "#F5F5F5";
+    public static final String HEX_CARD = "#FFFFFF";
+    public static final String HEX_TEXT_DARK = "#282828";
+    public static final String HEX_TEXT_LIGHT = "#828282";
+    public static final String HEX_BUTTON_GRAY = "#E6E6E6";
 
-    public static final Font FONT_TITLE = new Font("SansSerif", Font.BOLD, 26);
-    public static final Font FONT_SUBTITLE = new Font("SansSerif", Font.BOLD, 16);
-    public static final Font FONT_NORMAL = new Font("SansSerif", Font.PLAIN, 14);
-    public static final Font FONT_SMALL = new Font("SansSerif", Font.PLAIN, 12);
+    // Fonts
+    public static final Font FONT_TITLE = Font.font("SansSerif", FontWeight.BOLD, 26);
+    public static final Font FONT_SUBTITLE = Font.font("SansSerif", FontWeight.BOLD, 16);
+    public static final Font FONT_NORMAL = Font.font("SansSerif", FontWeight.NORMAL, 14);
+    public static final Font FONT_SMALL = Font.font("SansSerif", FontWeight.NORMAL, 12);
 }

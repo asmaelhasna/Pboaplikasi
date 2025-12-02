@@ -54,7 +54,6 @@
       "description": "Deskripsi webinar...",
       "status": "APPROVED",
       "registeredParticipants": [
-        "123",
         "mhs"
       ]
     },
@@ -79,7 +78,8 @@
       "description": "-",
       "status": "APPROVED",
       "registeredParticipants": [
-        "2407134924"
+        "2407134924",
+        "mhs"
       ]
     }
   ]

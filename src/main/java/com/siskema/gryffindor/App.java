@@ -1,20 +1,18 @@
 package com.siskema.gryffindor;
 
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager; 
-import com.siskema.gryffindor.ui.LoginFrame;
+import com.siskema.gryffindor.ui.LoginStage;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-public class App {
+public class App extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        // Mulai aplikasi dengan LoginStage
+        new LoginStage().show();
+    }
+
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            
-            new LoginFrame().setVisible(true);
-        });
+        launch(args);
     }
 }

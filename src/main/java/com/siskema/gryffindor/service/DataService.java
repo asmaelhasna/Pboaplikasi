@@ -69,6 +69,13 @@ public class DataService {
                 .orElse(null);
     }
 
+    // --- FITUR BARU: Get All UKM ---
+    public List<User> getAllUKM() {
+        return database.getUsers().stream()
+                .filter(user -> user.getRole() == UserRole.PENYELENGGARA)
+                .collect(Collectors.toList());
+    }
+
     public void addUser(User user) {
         database.getUsers().add(user);
         saveData();
@@ -87,6 +94,22 @@ public class DataService {
         if (existing.isPresent()) {
             int index = database.getActivities().indexOf(existing.get());
             database.getActivities().set(index, activity);
+            saveData();
+        }
+    }
+
+    public void deleteActivity(Activity activity) {
+        database.getActivities().removeIf(a -> a.getId().equals(activity.getId()));
+        saveData();
+    }
+
+    public void removeParticipant(Activity activity, String username) {
+        Optional<Activity> target = database.getActivities().stream()
+                .filter(a -> a.getId().equals(activity.getId()))
+                .findFirst();
+        
+        if (target.isPresent()) {
+            target.get().getRegisteredParticipants().remove(username);
             saveData();
         }
     }
